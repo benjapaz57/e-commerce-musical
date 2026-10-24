@@ -7,3 +7,4 @@ api/src/generated
 *.log
 .DS_Store
 Thumbs.db
+*.tsbuildinfo

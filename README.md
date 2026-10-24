@@ -36,8 +36,11 @@ copy .env.example .env        # luego editar DATABASE_URL con su usuario y contr
 npm install                   # genera también el cliente de Prisma
 npm run db:migrate -- --name init
 npm run db:seed
+npm run admin:make -- su-email@ejemplo.com   # después de registrarse en la web: da rol de administrador
 npm run start:dev
 ```
+
+Mientras no haya un servicio de email configurado, los emails (confirmación de cuenta, recupero de contraseña) **se muestran en la terminal de la API** con el enlace para copiar en el navegador.
 
 La API queda en http://localhost:3000/api. Probar: http://localhost:3000/api/health
 
@@ -61,13 +64,14 @@ Abrir http://localhost:4200. La pantalla de inicio muestra el estado de front, A
 | `npm run db:migrate -- --name <nombre>` | Crea y aplica una migración tras cambiar `prisma/schema.prisma` |
 | `npm run db:seed` | Carga categorías, marcas y configuración inicial |
 | `npm run db:studio` | Abre Prisma Studio para ver los datos |
+| `npm run admin:make -- <email>` | Da rol de administrador a una cuenta (`--quitar` para sacarlo) |
 | `npm test` | Tests unitarios |
 
 ## Estado
 
 - [x] Bloque 1 — Base técnica y modelo de datos
-- [ ] Bloque 2 — Cuentas
-- [ ] Bloque 3 — Administración base
+- [x] Bloque 2 — Cuentas
+- [x] Bloque 3 — Administración base
 - [ ] Bloque 4 — Perfil de vendedor
 - [ ] Bloque 5 — Publicaciones
 - [ ] Bloque 6 — Descubrimiento y contacto

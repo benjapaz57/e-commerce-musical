@@ -1,6 +1,16 @@
 <header class="site-header">
-  <div class="container">
+  <div class="container header-inner">
     <a class="logo" routerLink="/">Marketplace musical</a>
+    <nav class="header-nav" aria-label="Cuenta">
+      @if (auth.user(); as user) {
+        @if (user.role === 'ADMIN') { <a routerLink="/admin">Administración</a> }
+        <a routerLink="/perfil">{{ user.displayName }}</a>
+        <button class="btn btn-link" type="button" (click)="logout()">Salir</button>
+      } @else {
+        <a routerLink="/ingresar">Ingresar</a>
+        <a class="btn btn-primary btn-sm" routerLink="/registro">Crear cuenta</a>
+      }
+    </nav>
   </div>
 </header>
 

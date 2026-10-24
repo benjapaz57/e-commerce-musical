@@ -11,10 +11,31 @@ main { flex: 1; padding-bottom: var(--space-8); }
   padding: var(--space-3) 0;
 }
 
+.header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
 .logo {
   font-weight: 700;
+  white-space: nowrap;
   color: var(--color-text);
   text-decoration: none;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  white-space: nowrap;
+
+  a:not(.btn) { color: var(--color-text); text-decoration: none; }
+  a:not(.btn):hover { text-decoration: underline; }
 }
 
 .site-footer {

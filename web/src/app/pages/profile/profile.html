@@ -1,0 +1,66 @@
+@if (auth.user(); as user) {
+  <div class="page-narrow">
+    <header class="page-head">
+      <h1>Mi perfil</h1>
+      <p class="muted">{{ user.email }} · miembro desde {{ user.createdAt.slice(0, 10).split('-').reverse().join('/') }}</p>
+    </header>
+
+    <section class="panel">
+      <h2>Datos públicos</h2>
+      <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+        <div class="field">
+          <label for="pf-name">Nombre visible</label>
+          <input id="pf-name" formControlName="displayName" autocomplete="nickname" />
+          <app-field-error [control]="form.controls.displayName" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="pf-prov">Provincia</label>
+            <select id="pf-prov" formControlName="province">
+              <option value="">Elegí una provincia</option>
+              @for (p of provincias$ | async; track p) { <option [value]="p">{{ p }}</option> }
+            </select>
+          </div>
+          <div class="field">
+            <label for="pf-city">Localidad</label>
+            <input id="pf-city" formControlName="city" autocomplete="address-level2" />
+            <app-field-error [control]="form.controls.city" />
+          </div>
+        </div>
+        <p class="hint">La ubicación se usa como valor por defecto al publicar.</p>
+
+        @if (error()) { <p class="form-error" role="alert">{{ error() }}</p> }
+        @if (saved()) { <p class="form-success" role="status">Cambios guardados.</p> }
+        <button class="btn btn-primary" type="submit" [disabled]="saving() || form.pristine">
+          {{ saving() ? 'Guardando…' : 'Guardar cambios' }}
+        </button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Sesión</h2>
+      <button class="btn btn-secondary" type="button" (click)="logout()">Cerrar sesión</button>
+    </section>
+
+    <section class="panel panel-danger">
+      <h2>Eliminar cuenta</h2>
+      <p class="muted">Tus publicaciones se pausan y tu perfil deja de mostrarse. No se puede deshacer.</p>
+      @if (!confirmingDelete()) {
+        <button class="btn btn-danger" type="button" (click)="confirmingDelete.set(true)">Eliminar mi cuenta</button>
+      } @else {
+        <form [formGroup]="deleteForm" (ngSubmit)="deleteAccount()" novalidate>
+          <div class="field">
+            <label for="del-pass">Confirmá con tu contraseña</label>
+            <input id="del-pass" type="password" formControlName="password" autocomplete="current-password" />
+            <app-field-error [control]="deleteForm.controls.password" />
+          </div>
+          @if (deleteError()) { <p class="form-error" role="alert">{{ deleteError() }}</p> }
+          <div class="actions">
+            <button class="btn btn-danger" type="submit">Eliminar definitivamente</button>
+            <button class="btn btn-secondary" type="button" (click)="confirmingDelete.set(false)">Cancelar</button>
+          </div>
+        </form>
+      }
+    </section>
+  </div>
+}

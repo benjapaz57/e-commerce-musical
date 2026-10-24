@@ -3,6 +3,7 @@
 import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/generated/prisma/client.js';
+import { SETTINGS } from '../src/settings/settings.definitions.js';
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
@@ -43,14 +44,6 @@ const BRANDS = [
   'Shure', 'Sennheiser', 'Audio-Technica', 'Behringer', 'Focusrite', 'PreSonus', 'Pioneer DJ',
 ];
 
-// Valores iniciales editables desde el panel de administración (RF-9.7).
-const SETTINGS: Record<string, unknown> = {
-  arancel: { amountUsd: 2 },
-  cotizacion: { provider: 'dolarapi', kind: 'blue', refreshMinutes: 30 },
-  // Valores iniciales propuestos, a ajustar con uso real.
-  limitesCuentasNuevas: { diasCuentaNueva: 30, publicacionesPorDia: 3, conversacionesPorDia: 10 },
-};
-
 async function main() {
   let order = 0;
   for (const [parentName, children] of Object.entries(CATEGORIES)) {
@@ -79,14 +72,16 @@ async function main() {
     });
   }
 
-  for (const [key, value] of Object.entries(SETTINGS)) {
+  for (const [key, def] of Object.entries(SETTINGS)) {
     // Solo crea: no pisa valores que un administrador ya haya cambiado.
     await prisma.appSetting.upsert({
       where: { key },
       update: {},
-      create: { key, value: value as object },
+      create: { key, value: def.defaultValue as object },
     });
   }
+  // Ajustes que ya no existen (el arancel único fue reemplazado por los planes).
+  await prisma.appSetting.deleteMany({ where: { key: { notIn: Object.keys(SETTINGS) } } });
 
   const [cats, brands] = await Promise.all([prisma.category.count(), prisma.brand.count()]);
   console.log(`Seed listo: ${cats} categorías, ${brands} marcas, ${Object.keys(SETTINGS).length} ajustes.`);

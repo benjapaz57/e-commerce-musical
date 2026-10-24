@@ -1,5 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { ValidationPipe } from '@nestjs/common';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module.js';
 
 async function bootstrap() {
@@ -7,6 +9,13 @@ async function bootstrap() {
   const config = app.get(ConfigService);
 
   app.setGlobalPrefix('api');
+  app.use(cookieParser());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // descarta campos que no están en el DTO
+      transform: true,
+    }),
+  );
   app.enableCors({
     origin: config.get<string>('WEB_ORIGIN', 'http://localhost:4200'),
     credentials: true,
