@@ -1,0 +1,46 @@
+// Tokens base provisorios. El sistema de diseño definitivo se define en la fase 3.
+:root {
+  --color-bg: #fbfaf7;
+  --color-surface: #ffffff;
+  --color-text: #1c1b19;
+  --color-text-muted: #5f5c55;
+  --color-border: #e4e1d9;
+  --color-muted-bg: #f0eee8;
+  --color-focus: #2f6fd6;
+  --color-success: #1d6b3a;
+  --color-success-bg: #e3f3e8;
+  --color-error: #a3231b;
+  --color-error-bg: #fbe7e5;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}

@@ -1,0 +1,18 @@
+# Base de datos local para desarrollo.
+# Uso: docker compose up -d   (desde la raíz del proyecto)
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: marketplace-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: marketplace
+      POSTGRES_PASSWORD: marketplace
+      POSTGRES_DB: marketplace
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:

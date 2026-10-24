@@ -1,0 +1,15 @@
+<section class="hero">
+  <h1>Comprá y vendé equipos usados, entre músicos.</h1>
+  <p>Estamos construyendo la plataforma. Esta pantalla confirma que todas las piezas están conectadas.</p>
+</section>
+
+<section class="status" aria-live="polite">
+  <h2>Estado del sistema</h2>
+  @switch (estado()) {
+    @case ('verificando') { <p class="badge">Verificando…</p> }
+    @case ('ok') { <p class="badge badge--ok">Front, API y base de datos funcionando</p> }
+    @case ('sin-base') { <p class="badge badge--error">La API responde, pero no hay conexión con la base de datos</p> }
+    @case ('sin-api') { <p class="badge badge--error">No hay conexión con la API. ¿Está corriendo en el puerto 3000?</p> }
+  }
+  <button type="button" (click)="verificar()" [disabled]="estado() === 'verificando'">Volver a verificar</button>
+</section>
